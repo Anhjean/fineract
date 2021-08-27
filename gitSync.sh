@@ -21,5 +21,5 @@
 git checkout main
 git remote add remoter-repo https://github.com/apache/fineract.git
 git fetch remoter-repo
-git merge remoter-repo/develop  --allow-unrelated-histories 
+git merge remoter-repo/develop  --allow-unrelated-histories
 git remote rm remoter-repo

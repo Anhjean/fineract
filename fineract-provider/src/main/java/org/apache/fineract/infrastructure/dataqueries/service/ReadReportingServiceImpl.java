@@ -100,7 +100,8 @@ public class ReadReportingServiceImpl implements ReadReportingService {
                 // out.flush();
                 // out.close();
             } catch (final Exception e) {
-                throw new PlatformDataIntegrityException("error.msg.exception.error", e.getMessage(), e);
+                LOG.error("error.msg.reporting.error - retrieveReportCSV:", e);
+                throw new PlatformDataIntegrityException("error.msg.exception.error - retrieveReportCSV", e.getMessage(), e);
             }
         };
     }
@@ -157,19 +158,26 @@ public class ReadReportingServiceImpl implements ReadReportingService {
     @Override
     public GenericResultsetData retrieveGenericResultset(final String name, final String type, final Map<String, String> queryParams,
             final boolean isSelfServiceUserReport) {
+        try {
+            final long startTime = System.currentTimeMillis();
+            LOG.info("STARTING REPORT: {}   Type: {}", name, type);
 
-        final long startTime = System.currentTimeMillis();
-        LOG.info("STARTING REPORT: {}   Type: {}", name, type);
+            final String sql = getSQLtoRun(name, type, queryParams, isSelfServiceUserReport);
 
-        final String sql = getSQLtoRun(name, type, queryParams, isSelfServiceUserReport);
+            LOG.info("STARTING TO FILL DATA WITH REPORT QUERY: {} ", sql);
+            final GenericResultsetData result = this.genericDataService.fillGenericResultSet(sql);
 
-        final GenericResultsetData result = this.genericDataService.fillGenericResultSet(sql);
+            final long elapsed = System.currentTimeMillis() - startTime;
+            LOG.info("FINISHING Report/Request Name: {} - {}     Elapsed Time: {}", name, type, elapsed);
+            return result;
+        } catch (final Exception e) {
+            LOG.error("error.msg.reporting.error - retrieveGenericResultset:", e);
+            throw new PlatformDataIntegrityException("error.msg.exception.error - retrieveGenericResultset", e.getMessage(), e);
 
-        final long elapsed = System.currentTimeMillis() - startTime;
-        LOG.info("FINISHING Report/Request Name: {} - {}     Elapsed Time: {}", name, type, elapsed);
-        return result;
+        }
     }
 
+    // Jean: Hàm xử lý chuỗi SQL trước khi chạy query
     private String getSQLtoRun(final String name, final String type, final Map<String, String> queryParams,
             final boolean isSelfServiceUserReport) {
 
@@ -178,11 +186,13 @@ public class ReadReportingServiceImpl implements ReadReportingService {
         final Set<String> keys = queryParams.keySet();
         for (final String key : keys) {
             final String pValue = queryParams.get(key);
-            // LOG.info("({} : {})", key, pValue);
+            LOG.info("getSQLtoRun - set key-value - for loop: ");
+            LOG.info("({} : {})", key, pValue);
             sql = this.genericDataService.replace(sql, key, pValue);
         }
 
         final AppUser currentUser = this.context.authenticatedUser();
+        // Jean: noted
         // Allows sql query to restrict data by office hierarchy if required
         sql = this.genericDataService.replace(sql, "${currentUserHierarchy}", currentUser.getOffice().getHierarchy());
         // Allows sql query to restrict data by current user Id if required
@@ -194,6 +204,7 @@ public class ReadReportingServiceImpl implements ReadReportingService {
 
         sql = this.genericDataService.wrapSQL(sql);
 
+        LOG.info("getSQLtoRun - Finished SQL query: " + sql);
         return sql;
     }
 
@@ -291,8 +302,8 @@ public class ReadReportingServiceImpl implements ReadReportingService {
             document.close();
             return genaratePdf;
         } catch (final Exception e) {
-            LOG.error("error.msg.reporting.error:", e);
-            throw new PlatformDataIntegrityException("error.msg.exception.error", e.getMessage(), e);
+            LOG.error("error.msg.reporting.error - retrieveReportPDF:", e);
+            throw new PlatformDataIntegrityException("error.msg.exception.error - retrieveReportPDF", e.getMessage(), e);
         }
     }
 

@@ -26,6 +26,11 @@ import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 @Table(name = "stretchy_parameter")
 public class ReportParameter extends AbstractPersistableCustom {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3149286119415914680L;
+
     protected ReportParameter() {
         //
     }

@@ -22,11 +22,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.fineract.infrastructure.core.exception.PlatformDataIntegrityException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Immutable data object representing a resultset column.
  */
 public final class ResultsetColumnHeaderData implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ResultsetColumnHeaderData.class);
 
     private final String columnName;
     private String columnType;
@@ -67,10 +71,13 @@ public final class ResultsetColumnHeaderData implements Serializable {
         this.columnValues = columnValues;
         this.columnCode = columnCode;
 
+        // Jean: Fix lỗi type đó ở đây nè. Chỉnh lại chút hàm adjustColumnTypes()
+        // LOG.info("columnType before adjusting process: {}", columnType);
         // Refer org.drizzle.jdbc.internal.mysql.MySQLType.java
         adjustColumnTypes();
 
         String displayType = null;
+        // LOG.info("columnType after adjusting process: {}", columnType);
         if (this.columnCode == null) {
             if (isString()) {
                 displayType = "STRING";
@@ -87,7 +94,7 @@ public final class ResultsetColumnHeaderData implements Serializable {
             } else if (isBit()) {
                 displayType = "BOOLEAN";
             } else {
-                throw new PlatformDataIntegrityException("error.msg.invalid.lookup.type",
+                throw new PlatformDataIntegrityException("error.msg.invalid.lookup.type - ResultsetColumnHeaderData - if path",
                         "Invalid Lookup Type:" + this.columnType + " - Column Name: " + this.columnName);
             }
 
@@ -97,7 +104,7 @@ public final class ResultsetColumnHeaderData implements Serializable {
             } else if (isVarchar()) {
                 displayType = "CODEVALUE";
             } else {
-                throw new PlatformDataIntegrityException("error.msg.invalid.lookup.type",
+                throw new PlatformDataIntegrityException("error.msg.invalid.lookup.type - ResultsetColumnHeaderData - else path",
                         "Invalid Lookup Type:" + this.columnType + " - Column Name: " + this.columnName);
             }
         }
@@ -106,6 +113,8 @@ public final class ResultsetColumnHeaderData implements Serializable {
     }
 
     private void adjustColumnTypes() {
+        // Jean: Chỗ này dùng để convert các type data giữa các JDBC connector
+        // về lại type chuẩn của java
         switch (this.columnType) {
             case "NEWDECIMAL":
                 this.columnType = "DECIMAL";
@@ -125,6 +134,8 @@ public final class ResultsetColumnHeaderData implements Serializable {
                 this.columnType = "tinyint";
             break;
             case "INT24":
+                // Jean add for Mariadb
+            case "INTEGER":
                 this.columnType = "int";
             break;
             default:
