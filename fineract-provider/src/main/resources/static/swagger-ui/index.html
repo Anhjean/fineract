@@ -52,7 +52,8 @@
         ],
         layout: "BaseLayout",
         onComplete: function() {
-         ui.preauthorizeBasic("basicAuth", "mifos", "password");
+        //  ui.preauthorizeBasic("basicAuth", "mifos", "password");
+         ui.preauthorizeBasic("oAuth", "midas", "password");
          ui.preauthorizeApiKey("tenantid", "default");
     } 
       })

@@ -24,10 +24,12 @@ import java.net.URL;
 import org.apache.catalina.connector.Connector;
 import org.apache.commons.io.FileUtils;
 import org.apache.coyote.http11.Http11NioProtocol;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -36,17 +38,22 @@ public class EmbeddedTomcatWithSSLConfiguration {
 
     // https://docs.spring.io/spring-boot/docs/2.2.6.RELEASE/reference/html/howto.html#howto-enable-multiple-connectors-in-tomcat
 
+    // Load enviroment
+    @Autowired
+    private Environment env;
+
     @Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-        tomcat.setContextPath(getContextPath());
+        // tomcat.setContextPath(getContextPath());
         tomcat.addAdditionalTomcatConnectors(createSslConnector());
         return tomcat;
     }
 
-    private String getContextPath() {
-        return "/fineract-provider";
-    }
+    // private String getContextPath() {
+    // return "/fineract-provider";
+    // return "/" + this.env.getProperty("contextPath");
+    // }
 
     protected Connector createSslConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
@@ -66,16 +73,18 @@ public class EmbeddedTomcatWithSSLConfiguration {
     }
 
     protected int getHTTPSPort() {
-        // TODO This shouldn't be hard-coded here, but configurable
-        return 8443;
+        // // TODO This shouldn't be hard-coded here, but configurable
+        // return 8443;
+        return Integer.parseInt(this.env.getProperty("SSLPort"));
     }
 
     protected String getKeystorePass() {
-        return "openmf";
+        // return "openmf";
+        return this.env.getProperty("keyPass");
     }
 
     protected Resource getKeystore() {
-        return new ClassPathResource("/keystore.jks");
+        return new ClassPathResource("/" + this.env.getProperty("keySource"));
     }
 
     public File getFile(Resource resource) throws IOException {
@@ -96,10 +105,8 @@ public class EmbeddedTomcatWithSSLConfiguration {
             // instead of File.createTempFile(prefix?, suffix?);
             File targetFile = new File(resource.getFilename());
             long len = resource.contentLength();
-            if (!targetFile.exists() || targetFile.length() != len) { // Only
-                                                                      // copy
-                                                                      // new
-                                                                      // files
+            if (!targetFile.exists() || targetFile.length() != len) {
+                // Only copy new file
                 FileUtils.copyURLToFile(url, targetFile);
             }
             return targetFile;
