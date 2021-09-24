@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `topic` (
   `member_type` TEXT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `title_UNIQUE` (`title` ASC)
-)ENGINE = InnoDB;
+)ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE='utf8mb4_unicode_ci';
 
 CREATE TABLE IF NOT EXISTS `topic_subscriber` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `topic_subscriber` (
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_topic_has_m_appuser_topic` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`id`),
   CONSTRAINT `fk_topic_has_m_appuser_m_appuser1` FOREIGN KEY (`user_id`) REFERENCES `m_appuser` (`id`)
-) ENGINE = InnoDB;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE='utf8mb4_unicode_ci';
 
 INSERT INTO topic (enabled, entity_type, entity_id, member_type, title) SELECT true, 'OFFICE', o.id as entity_id, UPPER(r.name) as member_type, CONCAT(r.name, ' of ', o.name) as title FROM m_office o, m_role r WHERE o.parent_id IS NULL AND CONCAT(r.name, ' of ', o.name) NOT IN (SELECT title FROM topic);
 
