@@ -57,7 +57,7 @@ CREATE TABLE `schema_version` (
   KEY `schema_version_vr_idx` (`version_rank`),
   KEY `schema_version_ir_idx` (`installed_rank`),
   KEY `schema_version_s_idx` (`success`)
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4 COLLATE='utf8mb4_unicode_ci';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +108,7 @@ CREATE TABLE `tenants` (
   `pool_time_between_eviction_runs_millis` INT DEFAULT 34000,
   `pool_min_evictable_idle_time_millis` INT DEFAULT 60000,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=UTF8MB4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=UTF8MB4 COLLATE='utf8mb4_unicode_ci';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -135,7 +135,7 @@ CREATE TABLE `timezones` (
   `timezonename` varchar(100) NOT NULL,
   `comments` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=416 DEFAULT CHARSET=UTF8MB4;
+) ENGINE=InnoDB AUTO_INCREMENT=416 DEFAULT CHARSET=UTF8MB4 COLLATE='utf8mb4_unicode_ci';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

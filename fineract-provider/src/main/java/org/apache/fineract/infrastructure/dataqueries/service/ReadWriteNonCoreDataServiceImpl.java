@@ -620,7 +620,7 @@ public class ReadWriteNonCoreDataServiceImpl implements ReadWriteNonCoreDataServ
 
             sqlBuilder.append(constrainBuilder);
 
-            sqlBuilder = sqlBuilder.append(") ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;");
+            sqlBuilder = sqlBuilder.append(") ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4 COLLATE='utf8mb4_unicode_ci';");
             this.jdbcTemplate.execute(sqlBuilder.toString());
 
             registerDatatable(datatableName, apptableName);

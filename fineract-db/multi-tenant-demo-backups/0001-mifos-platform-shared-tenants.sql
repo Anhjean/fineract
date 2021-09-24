@@ -57,7 +57,7 @@ CREATE TABLE `tenants` (
   `schema_password` varchar(100) NOT NULL DEFAULT 'mysql',
   `auto_update` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=UTF8MB4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=UTF8MB4 COLLATE='utf8mb4_unicode_ci';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +83,7 @@ CREATE TABLE `timezones` (
   `timezonename` varchar(100) NOT NULL,
   `comments` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=416 DEFAULT CHARSET=UTF8MB4;
+) ENGINE=InnoDB AUTO_INCREMENT=416 DEFAULT CHARSET=UTF8MB4 COLLATE='utf8mb4_unicode_ci';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
