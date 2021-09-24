@@ -26,7 +26,7 @@ INSERT INTO `m_code` (`code_name`, `is_system_defined`) VALUES ('ADDRESS_TYPE',1
 
 
 -- configuration
-INSERT INTO `c_configuration` (`name`, `value`, `date_value`, `enabled`, `is_trap_door`, `description`) VALUES ('Enable-Address', NULL, NULL, 0, 0, NULL);
+INSERT INTO `c_configuration` (`name`, `value`, `date_value`, `enabled`, `is_trap_door`, `description`) VALUES ('Enable-Address', NULL, NULL, 1, 0, NULL);
 
 -- add address table
 CREATE TABLE `m_address` (
@@ -95,18 +95,18 @@ AUTO_INCREMENT=1
 
 INSERT INTO `m_field_configuration` ( `entity`, `subentity`, `field`, `is_enabled`, `is_mandatory`, `validation_regex`) VALUES
     ('ADDRESS', 'CLIENT', 'addressType', 1, 0, ''),
-    ('ADDRESS', 'CLIENT', 'street', 1, 1, ''),
+    ('ADDRESS', 'CLIENT', 'street', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'addressLine1', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'addressLine2', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'addressLine3', 1, 0, ''),
-    ('ADDRESS', 'CLIENT', 'townVillage', 0, 0, ''),
-    ('ADDRESS', 'CLIENT', 'city', 1, 0, ''),
-    ('ADDRESS', 'CLIENT', 'countyDistrict', 0, 0, ''),
+    ('ADDRESS', 'CLIENT', 'townVillage', 1, 0, ''),
+    ('ADDRESS', 'CLIENT', 'countyDistrict', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'stateProvinceId', 1, 0, ''),
+    ('ADDRESS', 'CLIENT', 'city', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'countryId', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'postalCode', 1, 0, ''),
-    ('ADDRESS', 'CLIENT', 'latitude', 0, 0, ''),
-    ('ADDRESS', 'CLIENT', 'longitude', 0, 0, ''),
+    ('ADDRESS', 'CLIENT', 'latitude', 1, 0, ''),
+    ('ADDRESS', 'CLIENT', 'longitude', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'createdBy', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'createdOn', 1, 0, ''),
     ('ADDRESS', 'CLIENT', 'updatedBy', 1, 0, ''),

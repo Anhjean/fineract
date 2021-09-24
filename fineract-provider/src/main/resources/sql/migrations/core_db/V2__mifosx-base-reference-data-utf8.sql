@@ -30,7 +30,7 @@ VALUES
 INSERT INTO `c_configuration`
 (`name`, `enabled`)
 VALUES
-('maker-checker', 0);
+('maker-checker', 1);
 
 INSERT INTO `r_enum_value`
 VALUES
@@ -243,7 +243,7 @@ VALUES
 (138,'TJS',2,NULL,'Tajik Somoni','currency.TJS'),
 (139,'TMM',2,NULL,'Turkmenistan Manat','currency.TMM'),
 (140,'TND',3,'DT','Tunisian Dinar','currency.TND'),
-(141,'TOP',2,NULL,'Tonga Pa\'anga','currency.TOP'),
+(141,'TOP',2,NULL,'Tonga Paanga','currency.TOP'),
 (142,'TRY',2,NULL,'Turkish Lira','currency.TRY'),
 (143,'TTD',2,NULL,'Trinidad and Tobago Dollar','currency.TTD'),
 (144,'TWD',2,NULL,'New Taiwan Dollar','currency.TWD'),
@@ -254,7 +254,7 @@ VALUES
 (149,'UYU',2,'$U','Peso Uruguayo','currency.UYU'),
 (150,'UZS',2,NULL,'Uzbekistan Sum','currency.UZS'),
 (151,'VEB',2,'Bs.F.','Venezuelan Bolivar','currency.VEB'),
-(152,'VND',2,NULL,'Vietnamese Dong','currency.VND'),
+(152,'VND',0,'đ','Vietnamese Dong','currency.VND'),
 (153,'VUV',0,NULL,'Vanuatu Vatu','currency.VUV'),
 (154,'WST',2,NULL,'Samoa Tala','currency.WST'),
 (155,'XAF',0,NULL,'CFA Franc BEAC','currency.XAF'),
@@ -269,11 +269,11 @@ VALUES
 -- ======== end of currencies ==
 
 INSERT INTO `m_organisation_currency` (`id`, `code`, `decimal_places`, `name`, `display_symbol`, `internationalized_name_code`)
-VALUES (21,'USD',2,'US Dollar','$','currency.USD');
+VALUES (152,'VND',0,'Vietnamese Dong','đ','currency.VND');
 
 INSERT INTO `m_office` (`id`, `parent_id`, `hierarchy`, `external_id`, `name`, `opening_date`)
 VALUES
-(1,NULL,'.','1','Head Office','2009-01-01');
+(1,NULL,'.','1','Head Office','2020-01-01');
 
 INSERT INTO `m_group_level` (`id`, `parent_id`, `super_parent`, `level_name`, `recursable`, `can_have_clients`)
 VALUES (1, NULL, 1, 'Center', 1, 0);
@@ -294,47 +294,82 @@ VALUES
 ('GuarantorRelationship',1);
 
 INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
-select mc.id, 'Passport', 1
+select mc.id, 'Số ĐTDĐ', 1
 from m_code mc
 where mc.`code_name` = "Customer Identifier";
 
 INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
-select mc.id, 'Id', 2
+select mc.id, 'CMND/CCCD', 2
 from m_code mc
 where mc.`code_name` = "Customer Identifier";
 
 INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
-select mc.id, 'Drivers License', 3
+select mc.id, 'BHXH', 3
 from m_code mc
 where mc.`code_name` = "Customer Identifier";
 
 INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
-select mc.id, 'Any Other Id Type', 4
+select mc.id, 'BHYT', 4
+from m_code mc
+where mc.`code_name` = "Customer Identifier";
+
+INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
+select mc.id, 'Passport', 5
+from m_code mc
+where mc.`code_name` = "Customer Identifier";
+
+INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
+select mc.id, 'Hộ khẩu', 6
+from m_code mc
+where mc.`code_name` = "Customer Identifier";
+
+INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
+select mc.id, 'Bằng lái xe', 7
+from m_code mc
+where mc.`code_name` = "Customer Identifier";
+
+INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
+select mc.id, 'Số Tài khoản', 8
+from m_code mc
+where mc.`code_name` = "Customer Identifier";
+
+INSERT INTO `m_code_value`(`code_id`,`code_value`,`order_position`)
+select mc.id, 'Số thẻ', 9
 from m_code mc
 where mc.`code_name` = "Customer Identifier";
 
 -- Adding a few Default Guarantor Relationships
 insert into m_code_value (code_id,code_value,order_position)
-    select id,"Spouse",0
+    select id,"Vợ/Chồng",0
     from m_code
     where m_code.code_name="GuarantorRelationship";
 
 insert into m_code_value (code_id,code_value,order_position)
-    select id,"Parent",0
+    select id,"Cha/mẹ",1
     from m_code
     where m_code.code_name="GuarantorRelationship";
 
 insert into m_code_value (code_id,code_value,order_position)
-    select id,"Sibling",0
+    select id,"Anh/em",2
     from m_code
     where m_code.code_name="GuarantorRelationship";
 
 insert into m_code_value (code_id,code_value,order_position)
-    select id,"Business Associate",0
+    select id,"Họ hàng",3
     from m_code
     where m_code.code_name="GuarantorRelationship";
 
 insert into m_code_value (code_id,code_value,order_position)
-    select id,"Other",0
+    select id,"Đồng Nghiệp",4
+    from m_code
+    where m_code.code_name="GuarantorRelationship";
+
+insert into m_code_value (code_id,code_value,order_position)
+    select id,"Bạn bè",5
+    from m_code
+    where m_code.code_name="GuarantorRelationship";
+
+insert into m_code_value (code_id,code_value,order_position)
+    select id,"Khác",6
     from m_code
     where m_code.code_name="GuarantorRelationship";

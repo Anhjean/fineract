@@ -17,5 +17,11 @@
 -- under the License.
 --
 
-ALTER TABLE m_group ADD COLUMN `account_no` VARCHAR(20) NOT NULL;
+ALTER TABLE m_group 
+    ADD COLUMN `account_no` VARCHAR(20) NOT NULL ,
+    -- Jean add --
+    ADD COLUMN `default_savings_account` bigint(20) DEFAULT NULL,
+    ADD KEY `Default_saving_account_idx` (`default_savings_account`) USING BTREE,
+    ADD CONSTRAINT `Default_saving_account` FOREIGN KEY (`default_savings_account`) REFERENCES `m_savings_account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+    --------------
 UPDATE m_group set account_no = lpad(id,9,0);
