@@ -22,17 +22,35 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  - url: https://localhost:8443/fineract-provider/api/v1
-  - url: https://demo.fineract.dev/fineract-provider/api/v1
+  - url: https://localhost:18443/midas/api/v1
+  - url: https://jl-family.com/midas/api/v1
 components:
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
     tenantid:        
       type: apiKey
       in: header       
       name: fineract-platform-tenantid 
+    oauth2:    
+      type: oauth2
+      description: |-
+        This API uses OAuth 2 with the password grant flow. default valúe:
+          client credentials location: request-body,
+          client_id= community-app, 
+          client_secret= 123,
+          scopes: all
+      flows:
+        password: 
+          tokenUrl: https://jl-family.com/midas/api/oauth/token?tenantIdentifier=default
+          scopes:
+            all: All scopes
 security:
   - basicAuth: []
     tenantid: []
+  - oauth2:
+    - all

@@ -1,0 +1,1 @@
+rsync -avz ./fineract-provider/build/libs/fineract-provider.jar awsdev:~/Jean_data/

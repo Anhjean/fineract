@@ -248,8 +248,11 @@ allprojects  {
             "**/*.mustache",
             "**/package-info.java",
             "**/keystore.jks",
+            "**/static/**",
+            "**/static/api-docs/**",
             "**/static/swagger-ui/**",
             "**/api-docs/**",
+           
         ])
         strictCheck true
     }
@@ -305,6 +308,7 @@ allprojects  {
             '**/NOTICE_RELEASE',
             '**/NOTICE_SOURCE',
             // Swagger License
+             '**/src/main/resources/static/**',
             '**/src/main/resources/static/swagger-ui/**',
             // gradle
             '**/.gradle/**',

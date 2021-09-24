@@ -24,12 +24,11 @@ import java.net.URL;
 import org.apache.catalina.connector.Connector;
 import org.apache.commons.io.FileUtils;
 import org.apache.coyote.http11.Http11NioProtocol;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -39,8 +38,16 @@ public class EmbeddedTomcatWithSSLConfiguration {
     // https://docs.spring.io/spring-boot/docs/2.2.6.RELEASE/reference/html/howto.html#howto-enable-multiple-connectors-in-tomcat
 
     // Load enviroment
-    @Autowired
-    private Environment env;
+    // @Autowired
+    // private Environment env;
+
+    // Get Defined Variables in application.properties file
+    @Value("${SSLPort}")
+    Integer httpsPort;
+    @Value("${keySource}")
+    String keySource;
+    @Value("${keyPass}")
+    String keyPass;
 
     @Bean
     public ServletWebServerFactory servletContainer() {
@@ -62,7 +69,7 @@ public class EmbeddedTomcatWithSSLConfiguration {
             File keystore = getFile(getKeystore());
             connector.setScheme("https");
             connector.setSecure(true);
-            connector.setPort(getHTTPSPort());
+            connector.setPort(this.httpsPort);
             protocol.setSSLEnabled(true);
             protocol.setKeystoreFile(keystore.getAbsolutePath());
             protocol.setKeystorePass(getKeystorePass());
@@ -75,16 +82,16 @@ public class EmbeddedTomcatWithSSLConfiguration {
     protected int getHTTPSPort() {
         // // TODO This shouldn't be hard-coded here, but configurable
         // return 8443;
-        return Integer.parseInt(this.env.getProperty("SSLPort"));
+        return this.httpsPort;
     }
 
     protected String getKeystorePass() {
         // return "openmf";
-        return this.env.getProperty("keyPass");
+        return this.keyPass;
     }
 
     protected Resource getKeystore() {
-        return new ClassPathResource("/" + this.env.getProperty("keySource"));
+        return new ClassPathResource("/" + this.keySource);
     }
 
     public File getFile(Resource resource) throws IOException {

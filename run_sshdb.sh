@@ -17,9 +17,4 @@
 # under the License.
 #
 
-#/bin/bash
-git checkout main
-git remote add remoter-repo https://github.com/apache/fineract.git
-git fetch remoter-repo
-git merge remoter-repo/develop  --allow-unrelated-histories "merge grom remote"
-git remote rm remoter-repo
+ssh -o ExitOnForwardFailure=yes -f -N -L localhost:7777:127.0.0.1:7777 centos@3.105.25.202  -p 22 -i /Users/anhjean/Documents/midaskey/jean.pem
